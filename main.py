@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import math
 from data_loader import *
+import os
 
 frequency = 1/10
 cycle_frequency = 2 * np.pi * frequency 
@@ -29,7 +30,7 @@ def normal_mode(t):
     #Движение вверх
     up_stroke = get_ampl() * np.sin(cycle_frequency * t[:(math.ceil(samples_count / 2))])
     #Движение вниз
-    down_stroke = 0.9 * get_ampl() * np.sin(2 * np.pi * 1/10 * t[:(math.ceil(samples_count / 2))])
+    down_stroke = 0.75 * get_ampl() * np.sin(2 * np.pi * 1/10 * t[:(math.ceil(samples_count / 2))])
     
     return arr_aligment(np.concatenate((up_stroke, down_stroke)), samples_count)
 
@@ -69,8 +70,17 @@ def insufficient_liquid_supply(t):
 time = np.linspace(0, 10, 500)
 
 
+"""
+mpc = normal_mode(time)
+plt.plot(time, mpc)
+plt.xlabel("Time, s")
+plt.ylabel("Power, kW")
+plt.grid(True)
+"""
+
+
 #Создание обучающей выборки
-file_handler = open("C:\\Users\makarovda\\Documents\\pythonProjects\\mpcs\\learn.csv", 'w')
+file_handler = open(os.path.join(os.getcwd(), "train.csv"), 'w')
 
 for i in range(75):
     label = random.randint(0, 2)
@@ -91,7 +101,7 @@ for i in range(75):
 file_handler.close()
 
 #Создание тестовой выборки
-file_handler = open("C:\\Users\makarovda\\Documents\\pythonProjects\\mpcs\\test.csv", 'w')
+file_handler = open(os.path.join(os.getcwd(), "test.csv"), 'w')
 
 for i in range(75):
     label = random.randint(0, 2)
@@ -110,14 +120,4 @@ for i in range(75):
     file_handler.write(data_string)
     
 file_handler.close()
-
-
-
-(labels, mpcs) = data_loader("C:\\Users\makarovda\\Documents\\pythonProjects\\mpcs\\test.csv")
-print(labels)
-
-
-
-
- 
 

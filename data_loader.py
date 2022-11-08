@@ -17,12 +17,12 @@ def data_loader(filepath):
 
         mpc = np.fromstring(mpc_str, dtype=float, sep=',', count=samples_count)
         mpcs.append(mpc)
-        print(label)
+        #print(label)
 
     file_handler.close()
 
     mpcs = np.array(mpcs)
-    labels = np.array(label)
+    labels = np.array(labels)
     return (labels, mpcs)
 
 
